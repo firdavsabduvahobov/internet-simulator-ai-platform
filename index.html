@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="vanilla">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Internet unumdorligi va xavfsizlik protokollarini baholash simulyatori</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside id="sidebar">
+  <div class="brand">
+    <span class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg></span>
+    <div>
+      NetSim Pro
+      <small id="brandSubtitle">Unumdorlik & Xavfsizlik</small>
+    </div>
+  </div>
+
+  <nav id="sidebarNav">
+    <!-- Umumiy / Asosiy -->
+    <a data-view="home" class="active" id="navHome">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></i>
+      <span class="i18n-nav-home">Bosh sahifa</span>
+    </a>
+
+    <!-- 1. TALABA NAVIGATSIYASI -->
+    <div id="navGroupStudent" class="nav-role-group">
+      <div class="nav-role-title i18n-role-student-title">Talaba Paneli</div>
+      <a data-view="student-dash">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></i>
+        <span class="i18n-nav-stud-dash">Talaba Dashboardi</span>
+      </a>
+      <a data-view="student-labs">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></i>
+        <span class="i18n-nav-stud-labs">Laboratoriya ishlari</span>
+      </a>
+      <a data-view="student-reports">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></i>
+        <span class="i18n-nav-stud-reports">Mening hisobotlarim</span>
+      </a>
+    </div>
+
+    <!-- 2. O'QITUVCHI NAVIGATSIYASI -->
+    <div id="navGroupTeacher" class="nav-role-group">
+      <div class="nav-role-title i18n-role-teacher-title">O'qituvchi Paneli</div>
+      <a data-view="teacher-dash">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></i>
+        <span class="i18n-nav-tea-dash">O'qituvchi Dashboardi</span>
+      </a>
+      <a data-view="teacher-students">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></i>
+        <span class="i18n-nav-tea-students">Guruhlar va Talabalar</span>
+      </a>
+      <a data-view="teacher-assignments">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></i>
+        <span class="i18n-nav-tea-assignments">Topshiriqlar</span>
+      </a>
+      <a data-view="teacher-review">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></i>
+        <span class="i18n-nav-tea-review">Ishlarni baholash</span>
+      </a>
+    </div>
+
+    <!-- 3. TARMOQ MUTAXASSISI NAVIGATSIYASI -->
+    <div id="navGroupSpecialist" class="nav-role-group">
+      <div class="nav-role-title i18n-role-spec-title">Tarmoq Mutaxassisi</div>
+      <a data-view="specialist-dash">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></i>
+        <span class="i18n-nav-spec-dash">Mutaxassis Dashboardi</span>
+      </a>
+      <a data-view="specialist-diag">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></i>
+        <span class="i18n-nav-spec-diag">Chuqur Diagnostika</span>
+      </a>
+      <a data-view="specialist-matrix">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></i>
+        <span class="i18n-nav-spec-matrix">Protokollar Matritsasi</span>
+      </a>
+    </div>
+
+    <!-- 4. ADMINISTRATOR NAVIGATSIYASI (/admin) -->
+    <div id="navGroupAdmin" class="nav-role-group">
+      <div class="nav-role-title i18n-role-admin-title">Admin Panel (/admin)</div>
+      <a data-view="admin-dash">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></i>
+        <span class="i18n-nav-adm-dash">Admin Dashboard</span>
+      </a>
+      <a data-view="admin-users">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></i>
+        <span class="i18n-nav-adm-users">Foydalanuvchilar</span>
+      </a>
+      <a data-view="admin-roles">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></i>
+        <span class="i18n-nav-adm-roles">Rollar va RBAC</span>
+      </a>
+      <a data-view="admin-logs">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></i>
+        <span class="i18n-nav-adm-logs">Audit va Xavfsizlik</span>
+      </a>
+      <a data-view="admin-db">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></i>
+        <span class="i18n-nav-adm-db">Baza & Zaxira</span>
+      </a>
+      <a data-view="admin-settings">
+        <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></i>
+        <span class="i18n-nav-adm-settings">Tizim Sozlamalari</span>
+      </a>
+    </div>
+
+    <!-- Umumiy Simulyator vositalari -->
+    <div class="nav-role-title i18n-nav-tools-title">Simulyatsiya Vositalari</div>
+    <a data-view="new">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg></i>
+      <span class="i18n-nav-sim-new">Simulyator</span>
+    </a>
+    <a data-view="topology">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="16" y="2" width="6" height="6" rx="1"/><rect x="9" y="16" width="6" height="6" rx="1"/><path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M12 13v3"/></svg></i>
+      <span class="i18n-nav-topo">Jonli Topologiya</span>
+    </a>
+    <a data-view="results">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></i>
+      <span class="i18n-nav-results">Natijalar & Grafiklar</span>
+    </a>
+    <a data-view="protocols">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></i>
+      <span class="i18n-nav-protocols">Protokollar</span>
+    </a>
+    <a data-view="ai">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"/></svg></i>
+      <span class="i18n-nav-ai">AI Diagnostika</span>
+    </a>
+    <a data-view="history">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg></i>
+      <span class="i18n-nav-history">Tarix</span>
+    </a>
+    <a data-view="settings">
+      <i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></i>
+      <span class="i18n-nav-settings">Sozlamalar</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-status">
+    <span class="status-indicator" id="srvIndicator"></span>
+    <span id="srvStatusTxt">Lokal / API rejim</span>
+  </div>
+</aside>
+
+<!-- ===== ASOSIY QISM ===== -->
+<main>
+  <header class="top">
+    <div class="top-title">
+      <button id="menuBtn" aria-label="Menyu">☰</button>
+      <div>
+        <h1 id="mainTitleHeading">Internet unumdorligi va xavfsizlik protokollarini baholash simulyatori</h1>
+        <p id="mainSubtitleHeading">Talaba, O'qituvchi, Tarmoq Mutaxassisi va Administrator uchun yagona ilmiy platforma</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- Til tanlash (UZ / RU / EN) -->
+      <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="uz" onclick="changeLanguage('uz')">UZ</button>
+        <button class="lang-btn" data-lang="ru" onclick="changeLanguage('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="changeLanguage('en')">EN</button>
+      </div>
+
+      <!-- Ranglar va Mavzu tanlash -->
+      <div class="theme-switcher-bar">
+        <div class="theme-dots">
+          <button class="theme-dot dot-vanilla active" data-theme="vanilla" title="Vanilla Soft"></button>
+          <button class="theme-dot dot-vanilla-dark" data-theme="vanilla-dark" title="Dark Mode (Mocha)"></button>
+          <button class="theme-dot dot-light" data-theme="light" title="Clean White"></button>
+          <button class="theme-dot dot-cyan" data-theme="cyan" title="Cyber Cyan"></button>
+        </div>
+      </div>
+
+      <!-- Foydalanuvchi hisobi / Profil chipi -->
+      <div class="user-profile-bar" id="userProfileBar">
+        <div class="user-chip" id="userChip" onclick="openAuthModal()">
+          <div class="user-avatar" id="userAvatar">?</div>
+          <div class="user-info-text">
+            <span class="user-name" id="userNameDisplay">Kirish</span>
+            <span class="user-role-badge" id="userRoleBadge">Mehmon</span>
+          </div>
+        </div>
+        <button class="btn btn-sm ghost" id="btnLogout" onclick="logoutUser()" style="display:none;" title="Chiqish">🚪</button>
+      </div>
+
+      <div id="liveTelemetryBadge" style="display:none;" class="live-pill">
+        <span class="live-dot"></span> Jonli NOC
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- ROL SEGMENTED PILL SWITCHER (Talaba | O'qituvchi | Mutaxassis | Admin) -->
+  <!-- ============================================================ -->
+  <div class="role-pill-nav-container">
+    <div class="role-pill-switcher" id="rolePillSwitcher">
+      <button type="button" class="role-pill-btn" data-role="student" onclick="switchDashboardRole('student')">Talaba</button>
+      <button type="button" class="role-pill-btn" data-role="teacher" onclick="switchDashboardRole('teacher')">O'qituvchi</button>
+      <button type="button" class="role-pill-btn" data-role="specialist" onclick="switchDashboardRole('specialist')">Mutaxassis</button>
+      <button type="button" class="role-pill-btn active" data-role="admin" onclick="switchDashboardRole('admin')">Admin</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 0. BOSH SAHIFA (HOME)                      -->
+  <!-- ========================================== -->
+  <section class="view show" id="v-home">
+    <div class="role-banner">
+      <div class="role-banner-title">
+        <div class="role-banner-icon">🌐</div>
+        <div class="role-banner-text">
+          <h2 id="homeWelcomeTitle">Xush kelibsiz!</h2>
+          <p id="homeWelcomeDesc">Internet unumdorligi va zamonaviy xavfsizlik protokollarini baholash tizimi.</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-sm" onclick="show('new')">⚡ Simulyatsiyani boshlash</button>
+        <button class="btn btn-sm ghost" onclick="openAuthModal()">🔑 Tizimga kirish / Rollar</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card"><span class="i18n-kpi-total-sims">Jami simulyatsiyalar</span><b id="sTotal">0</b></div>
+      <div class="card"><span class="i18n-kpi-avg-lat">O'rtacha kechikish</span><b id="sLat">–</b></div>
+      <div class="card"><span class="i18n-kpi-avg-loss">O'rtacha paket yo'qotilishi</span><b id="sLoss">–</b></div>
+      <div class="card"><span class="i18n-kpi-net-status">Tarmoq holati</span><b id="sStatus">–</b></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h2 class="i18n-recent-sims-title">Oxirgi simulyatsiyalar</h2>
+        <button class="btn btn-sm ghost" onclick="show('new')">＋ Yangi simulyatsiya</button>
+      </div>
+      <div class="scroll"><table id="recentTbl"></table></div>
+    </div>
+
+    <!-- Tizimning 4 roli imkoniyatlari kartalari -->
+    <h2 style="margin: 24px 0 12px 0;">Platformaning 4 ta ixtisoslashtirilgan roli</h2>
+    <div class="labs-grid">
+      <div class="lab-card">
+        <div>
+          <div class="lab-card-top">
+            <span class="role-badge student">Talaba</span>
+            <span style="font-size:1.4rem;">🎓</span>
+          </div>
+          <h3>Laboratoriya va O'rganish</h3>
+          <p>Real tarmoq sharoitida laboratoriya ishlarini bajarish, protokollarni solishtirish va hisobot topshirish.</p>
+        </div>
+        <button class="btn btn-sm" onclick="quickLoginRole('talaba')">Talaba sifatida kirish →</button>
+      </div>
+
+      <div class="lab-card">
+        <div>
+          <div class="lab-card-top">
+            <span class="role-badge teacher">O'qituvchi</span>
+            <span style="font-size:1.4rem;">👨‍🏫</span>
+          </div>
+          <h3>Guruhlar & Baholash</h3>
+          <p>Talabalar ro'yxatini ko'rish, topshiriqlar yaratish va topshirilgan laboratoriya ishlarini baholash.</p>
+        </div>
+        <button class="btn btn-sm" onclick="quickLoginRole('oqituvchi')">O'qituvchi sifatida kirish →</button>
+      </div>
+
+      <div class="lab-card">
+        <div>
+          <div class="lab-card-top">
+            <span class="role-badge specialist">Tarmoq Mutaxassisi</span>
+            <span style="font-size:1.4rem;">🌐</span>
+          </div>
+          <h3>Chuqur Tarmoq Tahlili</h3>
+          <p>Mathis TCP formulasi, BDP, M/M/1 navbat nazariyasi, AI stress-test va Goodput tahlili.</p>
+        </div>
+        <button class="btn btn-sm" onclick="quickLoginRole('mutaxassis')">Mutaxassis sifatida kirish →</button>
+      </div>
+
+      <div class="lab-card">
+        <div>
+          <div class="lab-card-top">
+            <span class="role-badge admin">Administrator</span>
+            <span style="font-size:1.4rem;">🛡️</span>
+          </div>
+          <h3>Admin Panel (/admin)</h3>
+          <p>Foydalanuvchilar, RBAC rollar, tizim statistikasi, audit loglari va SQLite ma'lumotlar bazasi zaxirasi.</p>
+        </div>
+        <button class="btn btn-sm danger" onclick="quickLoginRole('admin')">Admin panelga kirish →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 1. TALABA DASHBOARDI                       -->
+  <!-- ========================================== -->
+  <section class="view" id="v-student-dash">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm active" onclick="show('student-dash')">🎓 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('student-labs')">📚 Laboratoriyalar Katalogi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('student-reports')">📝 Mening Hisobotlarim</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('new')">⚡ Jonli Simulyator</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('topology')">⛶ Tarmoq Topologiyasi</button>
+    </div>
+
+    <div class="role-banner">
+      <div class="role-banner-title">
+        <div class="role-banner-icon">🎓</div>
+        <div class="role-banner-text">
+          <h2 id="studWelcomeName">Talaba Shaxsiy Kabineti</h2>
+          <p id="studWelcomeSub">Guruh: 412-21 TATU | Telekommunikatsiya texnologiyalari fakulteti</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-sm" onclick="show('student-labs')">📚 Laboratoriyalarga o'tish</button>
+        <button class="btn btn-sm ghost" onclick="openSubmitLabModal()">📝 Hisobot topshirish</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px; padding:18px 22px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <div>
+          <b style="font-size:1.05rem;">O'quv kursi va laboratoriya amaliyotlari o'zlashtirilishi</b>
+          <p style="color:var(--mu); font-size:0.85rem; margin:2px 0 0 0;">Semestr davomidagi barcha amaliy topshiriqlar dinamikasi</p>
+        </div>
+        <span class="status-pill active" id="studProgressBadge" style="font-weight:700;">67% Bajarildi</span>
+      </div>
+      <div style="width:100%; height:10px; background:var(--bg-input); border-radius:999px; overflow:hidden; border:1px solid var(--bd);">
+        <div id="studProgressBar" style="width:67%; height:100%; background:var(--tx); border-radius:999px; transition:width 0.4s ease;"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--mu); margin-top:6px;">
+        <span>Jami: 4 ta laboratoriya</span>
+        <span>Topshirilgan: 2 ta</span>
+        <span>Baholangan: 2 ta (O'rtacha: 96.5 ball)</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card"><span>Mavjud laboratoriyalar</span><b id="studStatTotalLabs">0</b></div>
+      <div class="card"><span>Topshirilgan hisobotlar</span><b id="studStatSubmitted">0</b></div>
+      <div class="card"><span>Baholangan ishlar</span><b id="studStatGraded">0</b></div>
+      <div class="card"><span>O'rtacha baho</span><b id="studStatAvgScore" style="color:var(--ok)">0</b></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px; border-left:4px solid var(--accent);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <span class="status-pill active" style="margin-bottom:6px; display:inline-block;">⚡ Tavsiya etilgan laboratoriya ishi</span>
+          <h3 style="margin:4px 0 6px 0;">1-Laboratoriya: HTTP vs HTTPS (TLS 1.2 va TLS 1.3) unumdorlik va xavfsizlik tahlili</h3>
+          <p style="color:var(--mu); font-size:0.88rem; margin:0;">Handshake RTT kechikishi, AES-GCM shifrlash va xavfsizlik indeksini amalda sinang.</p>
+        </div>
+        <button class="btn btn-sm" onclick="runPresetSim('tls13_opt')">⚡ Simulyatorda boshlash</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h2>Sizga biriktirilgan topshiriqlar</h2>
+        <button class="btn btn-sm ghost" onclick="show('student-labs')">Barchasini ko'rish</button>
+      </div>
+      <div class="scroll"><table id="studAssignmentsTbl"></table></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h2>Mening oxirgi topshirgan ishlarim va o'qituvchi taqrizlari</h2>
+        <button class="btn btn-sm ghost" onclick="show('student-reports')">Barchasini ko'rish</button>
+      </div>
+      <div class="scroll"><table id="studRecentReportsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- TALABA: LABORATORIYA ISHLARI KATALOGI -->
+  <section class="view" id="v-student-labs">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('student-dash')">🎓 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm active" onclick="show('student-labs')">📚 Laboratoriyalar Katalogi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('student-reports')">📝 Mening Hisobotlarim</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('new')">⚡ Jonli Simulyator</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+        <div>
+          <h2>Laboratoriya ishlari katalogi</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">Vazifani o'rganing va simulyatorga bir marta bosish orqali yuklang:</p>
+        </div>
+      </div>
+      <div id="studentLabsContainer" class="labs-grid"></div>
+    </div>
+  </section>
+
+  <!-- TALABA: MENING HISOBOTLARIM -->
+  <section class="view" id="v-student-reports">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('student-dash')">🎓 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('student-labs')">📚 Laboratoriyalar Katalogi</button>
+      <button type="button" class="btn btn-sm active" onclick="show('student-reports')">📝 Mening Hisobotlarim</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('new')">⚡ Jonli Simulyator</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Mening topshirgan laboratoriya hisobotlarim</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">O'qituvchi tomonidan tekshirilgan baholar va taqrizlar</p>
+        </div>
+        <button class="btn btn-sm" onclick="openSubmitLabModal()">＋ Yangi hisobot topshirish</button>
+      </div>
+      <div class="scroll"><table id="studentReportsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 2. O'QITUVCHI DASHBOARDI                   -->
+  <!-- ========================================== -->
+  <section class="view" id="v-teacher-dash">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm active" onclick="show('teacher-dash')">👨‍🏫 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-students')">👥 Guruhlar & Talabalar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-assignments')">📋 Topshiriqlar Boshqaruvi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-review')">✍️ Ishlarni Baholash</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('new')">⚡ O'qituvchi Simulyatori</button>
+    </div>
+
+    <div class="role-banner">
+      <div class="role-banner-title">
+        <div class="role-banner-icon">👨‍🏫</div>
+        <div class="role-banner-text">
+          <h2 id="teacherWelcomeName">O'qituvchi Boshqaruv Markazi</h2>
+          <p id="teacherWelcomeSub">Kompyuter tarmoqlari kafedrasi | 304-xona</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-sm" onclick="show('teacher-review')">✍️ Ishlarni tekshirish</button>
+        <button class="btn btn-sm ghost" onclick="openNewAssignmentModal()">＋ Yangi topshiriq</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card"><span>Jami talabalar</span><b id="teaStatStudents">0</b></div>
+      <div class="card"><span>Faol guruhlar</span><b id="teaStatGroups">0</b></div>
+      <div class="card"><span>Tekshirilishi kutilayotgan</span><b id="teaStatPending" style="color:var(--wa)">0</b></div>
+      <div class="card"><span>Baholangan ishlar</span><b id="teaStatGraded" style="color:var(--ok)">0</b></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h2>Akademik guruhlar o'zlashtirish tahlili</h2>
+          <p style="color:var(--mu); font-size:0.88rem; margin:2px 0 0 0;">Har bir guruhdagi talabalar faolligi, o'rtacha ball va topshirish ko'rsatkichi:</p>
+        </div>
+        <button class="btn btn-sm ghost" onclick="show('teacher-students')">Guruhlar ro'yxati</button>
+      </div>
+      <div id="teacherGroupsSummaryCards" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;"></div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h2>Tekshirilishi kutilayotgan laboratoriya hisobotlari</h2>
+          <p style="color:var(--mu); font-size:0.88rem; margin:2px 0 0 0;">Talabalar bajargan ishlar — to'g'ridan-to'g'ri baholash mumkin:</p>
+        </div>
+        <button class="btn btn-sm ghost" onclick="show('teacher-review')">Barchasini baholash</button>
+      </div>
+      <div class="scroll"><table id="teaRecentSubmissionsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- O'QITUVCHI: GURUHLAR VA TALABALAR -->
+  <section class="view" id="v-teacher-students">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-dash')">👨‍🏫 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm active" onclick="show('teacher-students')">👥 Guruhlar & Talabalar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-assignments')">📋 Topshiriqlar Boshqaruvi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-review')">✍️ Ishlarni Baholash</button>
+    </div>
+    <div class="card">
+      <h2>Akademik Guruhlar va Talabalar Ro'yxati</h2>
+      <p style="color:var(--mu); font-size:0.88rem; margin-bottom:16px;">Guruhlar kesimida o'zlashtirish va talabalar faolligi:</p>
+      <div id="teacherGroupsSummary" style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px;"></div>
+      <div class="scroll"><table id="teacherStudentsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- O'QITUVCHI: TOPSHIRIQLAR BOSHQARUVI -->
+  <section class="view" id="v-teacher-assignments">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-dash')">👨‍🏫 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-students')">👥 Guruhlar & Talabalar</button>
+      <button type="button" class="btn btn-sm active" onclick="show('teacher-assignments')">📋 Topshiriqlar Boshqaruvi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-review')">✍️ Ishlarni Baholash</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Laboratoriya Topshiriqlari</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">Guruhlar uchun laboratoriya topshiriqlarini yaratish va muddatlarni belgilash</p>
+        </div>
+        <button class="btn btn-sm" onclick="openNewAssignmentModal()">＋ Yangi topshiriq yaratish</button>
+      </div>
+      <div class="scroll"><table id="teacherAssignmentsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- O'QITUVCHI: ISHLARNI TEKSHIRISH VA BAHOLASH -->
+  <section class="view" id="v-teacher-review">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-dash')">👨‍🏫 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-students')">👥 Guruhlar & Talabalar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('teacher-assignments')">📋 Topshiriqlar Boshqaruvi</button>
+      <button type="button" class="btn btn-sm active" onclick="show('teacher-review')">✍️ Ishlarni Baholash</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Laboratoriya Natijalarini Baholash</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">Talabalar bajargan simulyatsiya hisobotlarini tekshirish va baholash</p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <select id="subStatusFilter" style="width:140px;" onchange="loadTeacherSubmissions()">
+            <option value="all">Barchasi</option>
+            <option value="submitted">Kutilmoqda</option>
+            <option value="graded">Baholangan</option>
+          </select>
+        </div>
+      </div>
+      <div class="scroll"><table id="teacherSubmissionsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 3. TARMOQ MUTAXASSISI DASHBOARDI           -->
+  <!-- ========================================== -->
+  <section class="view" id="v-specialist-dash">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm active" onclick="show('specialist-dash')">🌐 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('specialist-diag')">🔍 Chuqur Diagnostika</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('specialist-matrix')">🛡️ Protokollar Matritsasi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('topology')">⛶ Jonli Topologiya</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('protocols')">📊 Protokol Standartlari</button>
+    </div>
+
+    <div class="role-banner">
+      <div class="role-banner-title">
+        <div class="role-banner-icon">🌐</div>
+        <div class="role-banner-text">
+          <h2 id="specWelcomeName">Tarmoq Mutaxassisi Tahlil Markazi</h2>
+          <p id="specWelcomeSub">Magistral kanallar unumdorligi, Mathis TCP tahlili va kiberxavfsizlik auditi</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-sm" onclick="show('specialist-diag')">🔍 Chuqur Diagnostika</button>
+        <button class="btn btn-sm ghost" onclick="show('specialist-matrix')">📊 Protokollar Matritsasi</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card"><span>Qo'llab-quvvatlanuvchi protokollar</span><b>8 ta</b></div>
+      <div class="card"><span>RFC Standartlari</span><b>6 ta RFC</b></div>
+      <div class="card"><span>Dvigatel modeli</span><b style="color:var(--cy)">Mathis + M/M/1</b></div>
+      <div class="card"><span>Xavfsizlik darajasi</span><b style="color:var(--ok)">AES-GCM / QUIC</b></div>
+    </div>
+
+    <!-- Live Interactive Physical Model & Formula Calculator -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+        <div>
+          <h2>⚡ Jonli Interaktiv Tarmoq Fizikasi Kalkulyatori</h2>
+          <p style="color:var(--mu); font-size:0.88rem; margin:2px 0 0 0;">Slayderlarni o'zgartiring va Mathis chegarasi hamda BDP hisob-kitoblarini real vaqtda ko'ring:</p>
+        </div>
+        <button class="btn btn-sm" onclick="updateSpecLiveCalc()">🔄 Qayta hisoblash</button>
+      </div>
+
+      <div class="fields" style="margin-bottom:16px;">
+        <div class="field">
+          <label>Kanal kengligi: <b id="specLiveBwVal">100 Mbit/s</b></label>
+          <input type="range" id="specLiveBw" min="10" max="1000" step="10" value="100" class="rng" oninput="updateSpecLiveCalc()">
+        </div>
+        <div class="field">
+          <label>RTT Kechikish: <b id="specLiveRttVal">40 ms</b></label>
+          <input type="range" id="specLiveRtt" min="5" max="300" step="5" value="40" class="rng" oninput="updateSpecLiveCalc()">
+        </div>
+        <div class="field">
+          <label>Paket yo'qotilishi (p): <b id="specLiveLossVal">0.5 %</b></label>
+          <input type="range" id="specLiveLoss" min="0.01" max="5.0" step="0.05" value="0.5" class="rng" oninput="updateSpecLiveCalc()">
+        </div>
+        <div class="field">
+          <label>Kanal yuklamasi (ρ): <b id="specLiveLoadVal">60 %</b></label>
+          <input type="range" id="specLiveLoad" min="10" max="95" step="5" value="60" class="rng" oninput="updateSpecLiveCalc()">
+        </div>
+      </div>
+
+      <!-- Real-time calculation outputs -->
+      <div class="stats" style="grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));">
+        <div class="card" style="border:1px solid var(--bd);">
+          <span style="font-size:0.8rem;">Mathis Nazariy Limit</span>
+          <b id="specResMathis" style="color:var(--ok); font-size:1.3rem;">--</b>
+          <small id="specResMathisSub" style="color:var(--mu); font-size:0.75rem;">Maksimal TCP unumdorligi</small>
+        </div>
+        <div class="card" style="border:1px solid var(--bd);">
+          <span style="font-size:0.8rem;">BDP Bufer Hajmi</span>
+          <b id="specResBdp" style="color:var(--cy); font-size:1.3rem;">--</b>
+          <small style="color:var(--mu); font-size:0.75rem;">Bandwidth × RTT</small>
+        </div>
+        <div class="card" style="border:1px solid var(--bd);">
+          <span style="font-size:0.8rem;">M/M/1 Navbat Kechikishi</span>
+          <b id="specResWq" style="color:var(--wa); font-size:1.3rem;">--</b>
+          <small style="color:var(--mu); font-size:0.75rem;">Router bufer navbati</small>
+        </div>
+        <div class="card" style="border:1px solid var(--bd);">
+          <span style="font-size:0.8rem;">Tavsiya etilgan protokol</span>
+          <b id="specResProto" style="color:var(--tx); font-size:1.15rem;">--</b>
+          <small style="color:var(--mu); font-size:0.75rem;">Paket yo'qolishiga chidamli</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h2>Tarmoq Fizikasi va Matematikasi Asoslari</h2>
+      <div class="math-cards-grid">
+        <div class="math-card">
+          <h4>1. Mathis TCP O'tkazuvchanlik Formulasi</h4>
+          <div class="math-card-formula">Throughput ≤ (MSS · 1.22) / (RTT · √p)</div>
+          <div class="math-card-desc">Paket yo'qolishi va RTT kechikishi ostida TCP o'tkazuvchanligining nazariy fizik chegarasini hisoblaydi.</div>
+        </div>
+        <div class="math-card">
+          <h4>2. M/M/1 Navbat Kechikishi (Queuing Delay)</h4>
+          <div class="math-card-formula">W_q = ρ / [μ · (1 - ρ)]</div>
+          <div class="math-card-desc">Kanal yuklamasi (ρ → 1) oshganda router buferlarida navbatning eksponensial o'sishini modellashtiradi.</div>
+        </div>
+        <div class="math-card">
+          <h4>3. Bandwidth-Delay Product (BDP)</h4>
+          <div class="math-card-formula">BDP = Bandwidth × RTT</div>
+          <div class="math-card-desc">Kanalni to'liq to'ldirish uchun zarur bo'lgan optimal TCP oyna va socket bufer hajmini (KB) aniqlaydi.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protocol Comparison Matrix Preview -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h2>Barcha 8 ta Protokollar Qiyosiy Matritsasi</h2>
+        <button class="btn btn-sm ghost" onclick="show('specialist-matrix')">To'liq matritsani ochish</button>
+      </div>
+      <div class="scroll"><table id="specDashMatrixTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- MUTAXASSIS: CHUQUR DIAGNOSTIKA -->
+  <section class="view" id="v-specialist-diag">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('specialist-dash')">🌐 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm active" onclick="show('specialist-diag')">🔍 Chuqur Diagnostika</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('specialist-matrix')">🛡️ Protokollar Matritsasi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('topology')">⛶ Jonli Topologiya</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px;">
+        <div>
+          <h2>Chuqur Tarmoq Diagnostikasi va Fizikasi</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">Parametrlarni kiriting va nazariy fizik chegaralar bilan real unumdorlikni tahlil qiling:</p>
+        </div>
+        <button class="btn btn-sm" id="btnRunDeepDiag">⚡ Chuqur tahlilni hisoblash</button>
+      </div>
+
+      <div class="fields" id="specDiagFields"></div>
+
+      <div id="specDiagResultsBox" style="margin-top:20px; display:none;">
+        <h3>Hisoblangan Ilmiy Ko'rsatkichlar</h3>
+        <div class="math-cards-grid" id="specMathGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MUTAXASSIS: PROTOKOLLAR MATRITSASI -->
+  <section class="view" id="v-specialist-matrix">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('specialist-dash')">🌐 Asosiy Dashboard</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('specialist-diag')">🔍 Chuqur Diagnostika</button>
+      <button type="button" class="btn btn-sm active" onclick="show('specialist-matrix')">🛡️ Protokollar Matritsasi</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('protocols')">📊 Standartlar</button>
+    </div>
+    <div class="card">
+      <h2>Barcha 8 ta Tarmoq va Shifrlash Protokollari Matritsasi</h2>
+      <p style="color:var(--mu); font-size:0.88rem; margin-bottom:14px;">Xavfsizlik darajasi, Handshake kechikishi, Overhead va CPU sarfi solishtiruvi:</p>
+      <div class="scroll"><table id="specMatrixTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 4. ADMINISTRATOR BOSHQARUV PANEL (/admin)  -->
+  <!-- ========================================== -->
+  <section class="view" id="v-admin-dash">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm active" onclick="show('admin-dash')">🛡️ Asosiy Admin Panel</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-users')">👥 Foydalanuvchilar (CRUD)</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-roles')">🔑 RBAC Rollar & Ruxsatlar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-logs')">📜 Xavfsizlik & Audit Loglari</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-db')">💾 Ma'lumotlar Bazasi & Zaxira</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-settings')">⚙️ Tizim Sozlamalari</button>
+    </div>
+
+    <div class="role-banner" style="border-left: 4px solid var(--er);">
+      <div class="role-banner-title">
+        <div class="role-banner-icon" style="background:rgba(220,38,38,0.1); color:var(--er);">🛡️</div>
+        <div class="role-banner-text">
+          <h2>Mustaqil Admin Panel (/admin)</h2>
+          <p>Tizim xavfsizligi, foydalanuvchilar, RBAC rollar va ma'lumotlar bazasi to'liq nazorati</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-sm" onclick="openAdminUserModal()">＋ Yangi foydalanuvchi</button>
+        <button class="btn btn-sm ghost" onclick="downloadDatabaseBackup()">💾 Zaxira nusxa (JSON)</button>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="card"><span>Jami foydalanuvchilar</span><b id="admStatUsers">0</b></div>
+      <div class="card"><span>Jami laboratoriyalar</span><b id="admStatLabs">0</b></div>
+      <div class="card"><span>O'tkazilgan simulyatsiyalar</span><b id="admStatSims">0</b></div>
+      <div class="card"><span>Baza hajmi (SQLite)</span><b id="admStatDbSize" style="color:var(--cy)">0 KB</b></div>
+    </div>
+
+    <!-- Quick Admin Action Bar -->
+    <div class="card" style="margin-bottom:20px; padding:16px 20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div>
+          <b>Tezkor Administrator Boshqaruv Tugmalari</b>
+          <p style="color:var(--mu); font-size:0.85rem; margin:2px 0 0 0;">Asosiy tizim amallarini bir bosishda bajaring:</p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-sm" onclick="openAdminUserModal()">＋ Foydalanuvchi qo'shish</button>
+          <button class="btn btn-sm ghost" onclick="downloadDatabaseBackup()">💾 DB Backup</button>
+          <button class="btn btn-sm ghost" onclick="vacuumDatabase()">⚡ VACUUM Siqish</button>
+          <button class="btn btn-sm ghost" onclick="show('admin-logs')">📜 Audit ko'rish</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts">
+      <div class="card">
+        <h3>Foydalanuvchilarning rollar bo'yicha taqsimoti</h3>
+        <div class="cw"><canvas id="cAdminRoles"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Tizim monitoringi va zaxira holati</h3>
+        <div style="padding:10px 0; font-size:0.92rem; line-height:1.7;">
+          <div><b>Ma'lumotlar bazasi:</b> SQLite 3.x (13 ta jadval)</div>
+          <div><b>RBAC Tizimi:</b> Faol (Role-Based Access Control)</div>
+          <div><b>PBKDF2 Xesh:</b> HMAC-SHA256 (100,000 iteratsiya)</div>
+          <div><b>Audit Jurnali:</b> Faol (Har bir amal qayd etilmoqda)</div>
+        </div>
+        <div class="acts" style="margin-top:14px;">
+          <button class="btn btn-sm ghost" onclick="show('admin-db')">💾 Bazani boshqarish</button>
+          <button class="btn btn-sm ghost" onclick="show('admin-settings')">⚙️ Sozlamalar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Users List right on Admin Dashboard -->
+    <div class="card" style="margin-top:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div>
+          <h3>Foydalanuvchilar ro'yxati (Tezkor ko'rinish)</h3>
+          <p style="color:var(--mu); font-size:0.85rem; margin:2px 0 0 0;">Barcha ro'yxatdan o'tgan akkauntlar va ularning huquqlari:</p>
+        </div>
+        <button class="btn btn-sm ghost" onclick="show('admin-users')">To'liq boshqarish (CRUD)</button>
+      </div>
+      <div class="scroll"><table id="admDashUsersTbl"></table></div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3>Oxirgi xavfsizlik va tizim jurnallari (Audit Logs)</h3>
+        <button class="btn btn-sm ghost" onclick="show('admin-logs')">Barchasini ko'rish</button>
+      </div>
+      <div class="scroll"><table id="admRecentLogsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ADMIN: FOYDALANUVCHILAR BOSHQARUVI -->
+  <section class="view" id="v-admin-users">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-dash')">🛡️ Asosiy Admin Panel</button>
+      <button type="button" class="btn btn-sm active" onclick="show('admin-users')">👥 Foydalanuvchilar (CRUD)</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-roles')">🔑 RBAC Rollar & Ruxsatlar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-logs')">📜 Xavfsizlik & Audit Loglari</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-db')">💾 Ma'lumotlar Bazasi & Zaxira</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-settings')">⚙️ Tizim Sozlamalari</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Foydalanuvchilar Boshqaruvi</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">Talaba, o'qituvchi, mutaxassis va admin hisoblarini boshqarish</p>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="text" id="admUserSearch" class="txt" placeholder="Qidiruv..." style="width:160px;" oninput="filterAdminUsers()">
+          <select id="admRoleFilter" style="width:130px;" onchange="loadAdminUsers()">
+            <option value="all">Barcha rollar</option>
+            <option value="student">Talaba</option>
+            <option value="teacher">O'qituvchi</option>
+            <option value="specialist">Mutaxassis</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button class="btn btn-sm" onclick="openAdminUserModal()">＋ Foydalanuvchi qo'shish</button>
+        </div>
+      </div>
+      <div class="scroll"><table id="adminUsersTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ADMIN: ROLLAR VA RBAC -->
+  <section class="view" id="v-admin-roles">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-dash')">🛡️ Asosiy Admin Panel</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-users')">👥 Foydalanuvchilar (CRUD)</button>
+      <button type="button" class="btn btn-sm active" onclick="show('admin-roles')">🔑 RBAC Rollar & Ruxsatlar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-logs')">📜 Xavfsizlik & Audit Loglari</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-db')">💾 Ma'lumotlar Bazasi & Zaxira</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-settings')">⚙️ Tizim Sozlamalari</button>
+    </div>
+    <div class="card">
+      <h2>Rollar va Ruxsatlar Tizimi (RBAC)</h2>
+      <p style="color:var(--mu); font-size:0.88rem; margin-bottom:16px;">Tizimda belgilangan 4 ta rol va ularga biriktirilgan granular ruxsatlar:</p>
+      <div id="adminRolesContainer"></div>
+    </div>
+  </section>
+
+  <!-- ADMIN: AUDIT LOGLARI -->
+  <section class="view" id="v-admin-logs">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-dash')">🛡️ Asosiy Admin Panel</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-users')">👥 Foydalanuvchilar (CRUD)</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-roles')">🔑 RBAC Rollar & Ruxsatlar</button>
+      <button type="button" class="btn btn-sm active" onclick="show('admin-logs')">📜 Xavfsizlik & Audit Loglari</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-db')">💾 Ma'lumotlar Bazasi & Zaxira</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-settings')">⚙️ Tizim Sozlamalari</button>
+    </div>
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Xavfsizlik va Audit Jurnallari</h2>
+          <p style="color:var(--mu); font-size:0.88rem;">Tizimga kirishlar, xatolar, o'zgarishlar va hodisalar jurnali</p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <select id="admLogActionFilter" style="width:160px;" onchange="loadAdminAuditLogs()">
+            <option value="all">Barcha amallar</option>
+            <option value="USER_LOGIN">USER_LOGIN</option>
+            <option value="USER_REGISTER">USER_REGISTER</option>
+            <option value="SUBMIT_LAB">SUBMIT_LAB</option>
+            <option value="GRADE_LAB">GRADE_LAB</option>
+            <option value="ADMIN_CREATE_USER">ADMIN_CREATE_USER</option>
+            <option value="DATABASE_VACUUM">DATABASE_VACUUM</option>
+          </select>
+          <button class="btn btn-sm ghost" onclick="loadAdminAuditLogs()">↻ Yangilash</button>
+        </div>
+      </div>
+      <div class="scroll"><table id="adminAuditLogsTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ADMIN: MA'LUMOTLAR BAZASI VA ZAXIRALASH -->
+  <section class="view" id="v-admin-db">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-dash')">🛡️ Asosiy Admin Panel</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-users')">👥 Foydalanuvchilar (CRUD)</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-roles')">🔑 RBAC Rollar & Ruxsatlar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-logs')">📜 Xavfsizlik & Audit Loglari</button>
+      <button type="button" class="btn btn-sm active" onclick="show('admin-db')">💾 Ma'lumotlar Bazasi & Zaxira</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-settings')">⚙️ Tizim Sozlamalari</button>
+    </div>
+    <div class="card">
+      <h2>Ma'lumotlar Bazasi va Zaxira Nusxalari (SQLite)</h2>
+      <p style="color:var(--mu); font-size:0.88rem; margin-bottom:16px;">13 ta asosiy jadvallar holati, xotira hajmi va zaxiralash amallari:</p>
+
+      <div class="stats" style="margin-bottom:20px;">
+        <div class="card"><span>Jami Jadvallar</span><b id="admDbTablesCount">13 ta</b></div>
+        <div class="card"><span>Baza Hajmi</span><b id="admDbSizeText">0 KB</b></div>
+        <div class="card"><span>SQLite Versiyasi</span><b id="admDbVersion">3.x</b></div>
+      </div>
+
+      <div class="acts" style="margin-bottom:20px;">
+        <button class="btn btn-sm success" onclick="downloadDatabaseBackup()">📥 To'liq Zaxira Nusxasini Yuklab Olish (JSON Dump)</button>
+        <button class="btn btn-sm danger" onclick="vacuumDatabase()">🧹 Bazani Defragmentatsiya Qilish (VACUUM)</button>
+        <button class="btn btn-sm ghost" onclick="loadAdminDbInfo()">↻ Yangilash</button>
+      </div>
+
+      <h3>Jadvallar Ro'yxati va Qatorlar Soni</h3>
+      <div class="scroll"><table id="adminDbTablesTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- ADMIN: TIZIM KONFIGURATSIYASI -->
+  <section class="view" id="v-admin-settings">
+    <div class="dashboard-subnav">
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-dash')">🛡️ Asosiy Admin Panel</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-users')">👥 Foydalanuvchilar (CRUD)</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-roles')">🔑 RBAC Rollar & Ruxsatlar</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-logs')">📜 Xavfsizlik & Audit Loglari</button>
+      <button type="button" class="btn btn-sm ghost" onclick="show('admin-db')">💾 Ma'lumotlar Bazasi & Zaxira</button>
+      <button type="button" class="btn btn-sm active" onclick="show('admin-settings')">⚙️ Tizim Sozlamalari</button>
+    </div>
+    <div class="card">
+      <h2>Tizim Konfiguratsiyasi (System Settings)</h2>
+      <p style="color:var(--mu); font-size:0.88rem; margin-bottom:16px;">Platformaning global parametrlari va xavfsizlik sozlamalari:</p>
+      <form id="adminSettingsForm" onsubmit="saveAdminSettings(event)">
+        <div class="fields" id="adminSettingsFields"></div>
+        <div class="acts" style="margin-top:20px;">
+          <button type="submit" class="btn">Saqlash</button>
+          <button type="button" class="btn ghost" onclick="loadAdminSettings()">Bekor qilish</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 5. SIMULYATOR VA TAHLIL VOSITALARI         -->
+  <!-- ========================================== -->
+
+  <!-- YANGI SIMULYATSIYA -->
+  <section class="view" id="v-new">
+    <div class="card">
+      <h2>Tezkor ssenariylar (Presets)</h2>
+      <p style="color:var(--mu); font-size:0.9rem; margin-bottom:14px;">Haqiqiy tarmoq holatini bir tugma orqali yuklang:</p>
+      <div class="preset-container" id="presetList"></div>
+
+      <h2 style="margin-top:20px;">Tarmoq parametrlari</h2>
+      <div id="fields" class="fields"></div>
+
+      <h3>Xavfsizlik va uzatish protokoli</h3>
+      <div class="seg" id="protoSeg"></div>
+
+      <button class="btn big" id="runBtn">⚡ Simulyatsiyani boshlash</button>
+    </div>
+  </section>
+
+  <!-- JONLI TOPOLOGIYA -->
+  <section class="view" id="v-topology">
+    <div class="card">
+      <div class="topo-header">
+        <div>
+          <h2>Tarmoq Topologiyasi va Paketlar Oqimi</h2>
+          <p style="color:var(--mu); font-size:0.85rem;">Paketlar harakati, kechikish va yo'qotishlarni jonli vizual kuzatish</p>
+        </div>
+        <div class="topo-controls">
+          <button class="btn btn-sm" id="topoToggleBtn">⏸ To'xtatish</button>
+          <button class="btn btn-sm ghost" id="topoResetBtn">↻ Qayta hisoblash</button>
+          <button class="btn btn-sm danger" id="topoBurstBtn">💥 Paketlar bo'roni (Burst)</button>
+        </div>
+      </div>
+
+      <canvas id="topoCanvas" width="900" height="380"></canvas>
+
+      <div class="topo-metrics">
+        <div class="topo-mcard"><span>Yuborilgan paketlar</span><b id="tpSent">0</b></div>
+        <div class="topo-mcard"><span>Muvaffaqiyatli yetkazilgan</span><b id="tpDelivered" style="color:var(--ok)">0</b></div>
+        <div class="topo-mcard"><span>Yo'qotilgan paketlar</span><b id="tpDropped" style="color:var(--er)">0</b></div>
+        <div class="topo-mcard"><span>Real o'tkazuvchanlik</span><b id="tpRate">0 Mbit/s</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NATIJALAR -->
+  <section class="view" id="v-results">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+      <div class="acts" style="margin-top:0;">
+        <button class="btn btn-sm success" id="btnAutoOpt">✦ AI Optimallashtirish</button>
+        <button class="btn btn-sm danger" id="btnStressTest">💥 AI Stress-Test</button>
+        <button class="btn btn-sm" id="btnLiveToggle">🔴 Jonli Telemetriya (O'chiq)</button>
+        <button class="btn btn-sm ghost" id="btnExportJson">📥 JSON</button>
+        <button class="btn btn-sm ghost" id="btnExportCsv">📊 CSV</button>
+        <button class="btn btn-sm ghost" id="btnPrintReport">🖨 Chop etish</button>
+      </div>
+      <div>
+        <button class="btn btn-sm" onclick="show('topology')">⛶ Jonli Topologiyada ko'rish</button>
+      </div>
+    </div>
+
+    <div id="resBox"></div>
+
+    <div class="charts">
+      <div class="card wide"><h3>Tarmoq yuklamasi va kechikish dinamikasi</h3><div class="cw"><canvas id="c1"></canvas></div></div>
+      <div class="card"><h3>Packet Loss (Yuklama bo'yicha)</h3><div class="cw"><canvas id="c2"></canvas></div></div>
+      <div class="card"><h3>Bandwidth ishlatilishi</h3><div class="cw"><canvas id="c3"></canvas></div></div>
+      <div class="card"><h3>Tarmoq yuki va Overhead nisbati</h3><div class="cw"><canvas id="c4"></canvas></div></div>
+      <div class="card"><h3>Protokollar unumdorlik reytingi</h3><div class="cw"><canvas id="c5"></canvas></div></div>
+      <div class="card"><h3>Tarmoq salomatligi indeksi (Radar)</h3><div class="cw"><canvas id="c6"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- PROTOKOLLAR -->
+  <section class="view" id="v-protocols">
+    <div class="card">
+      <h2>Xavfsizlik va uzatish protokollari solishtiruvi</h2>
+      <div class="scroll"><table id="protoTbl"></table></div>
+    </div>
+    <div class="card">
+      <h2>Ikki protokolni solishtirish kalkulyatori</h2>
+      <div class="cmpSel"><select id="cmpA"></select><span>vs</span><select id="cmpB"></select></div>
+      <div class="scroll"><table id="cmpTbl"></table></div>
+      <p class="note">Solishtirish oxirgi simulyatsiya yoki joriy parametrlar asosida hisoblanadi.</p>
+    </div>
+  </section>
+
+  <!-- AI TAHLILI -->
+  <section class="view" id="v-ai"><div id="aiBox"></div></section>
+
+  <!-- TARIX -->
+  <section class="view" id="v-history">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <h2>Simulyatsiyalar tarixi</h2>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <input type="text" id="histSearch" class="txt" placeholder="Qidiruv (ID, protokol...)" style="width:200px;">
+          <select id="histFilter" style="width:140px;">
+            <option value="all">Barchasi</option>
+            <option value="A'lo">A'lo</option>
+            <option value="Yaxshi">Yaxshi</option>
+            <option value="O'rtacha">O'rtacha</option>
+            <option value="Kritik">Kritik</option>
+          </select>
+          <button class="btn btn-sm ghost" id="btnExportAllCsv">📥 CSV eksport</button>
+        </div>
+      </div>
+      <div class="scroll"><table id="histTbl"></table></div>
+    </div>
+  </section>
+
+  <!-- SOZLAMALAR -->
+  <section class="view" id="v-settings">
+    <div class="card">
+      <h2>Tizim va API Sozlamalari</h2>
+      <label class="chk">
+        <input type="checkbox" id="useApi" checked> Python / FastAPI Backend Serverdan foydalanish
+      </label>
+      <div class="field">
+        <label>Backend API manzili</label>
+        <input type="text" id="apiBase" class="txt" placeholder="http://localhost:8080">
+      </div>
+      <div class="acts">
+        <button class="btn" id="saveCfg">Sozlamalarni saqlash</button>
+        <button class="btn ghost" id="testApiBtn">API ulanishini tekshirish</button>
+        <button class="btn ghost" id="demoBtn">Demo ma'lumot yuklash</button>
+        <button class="btn danger" id="clearBtn">Barcha tarixni tozalash</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ========================================== -->
+<!-- 6. MODALLAR (AUTH, SUBMIT, GRADE, ADMIN)   -->
+<!-- ========================================== -->
+
+<!-- AUTH MODAL (Login / Register / Quick Test Sign-in) -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="authModalTitle">Tizimga kirish</h3>
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <button class="modal-tab active" id="tabLogin" onclick="switchAuthTab('login')">Kirish</button>
+        <button class="modal-tab" id="tabRegister" onclick="switchAuthTab('register')">Ro'yxatdan o'tish</button>
+      </div>
+
+      <!-- Tezkor Rollar Bilan Kirish (Quick Test Accounts) -->
+      <div class="quick-roles-title">Tezkor test hisoblari (1-bosishda):</div>
+      <div class="quick-roles-grid">
+        <button type="button" class="btn-quick-role" onclick="quickLoginRole('talaba')">
+          <span>🎓</span>
+          <div>Talaba<small>talaba / talaba123</small></div>
+        </button>
+        <button type="button" class="btn-quick-role" onclick="quickLoginRole('oqituvchi')">
+          <span>👨‍🏫</span>
+          <div>O'qituvchi<small>oqituvchi / oqituvchi123</small></div>
+        </button>
+        <button type="button" class="btn-quick-role" onclick="quickLoginRole('mutaxassis')">
+          <span>🌐</span>
+          <div>Mutaxassis<small>mutaxassis / mutaxassis123</small></div>
+        </button>
+        <button type="button" class="btn-quick-role" onclick="quickLoginRole('admin')">
+          <span>🛡️</span>
+          <div>Administrator<small>admin / admin123</small></div>
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="formLogin" onsubmit="submitLogin(event)">
+        <div class="field">
+          <label>Foydalanuvchi nomi yoki Email</label>
+          <input type="text" id="loginUsername" class="txt" required placeholder="admin, talaba, oqituvchi...">
+        </div>
+        <div class="field">
+          <label>Parol</label>
+          <input type="password" id="loginPassword" class="txt" required placeholder="Parolni kiriting">
+        </div>
+        <button type="submit" class="btn" style="width:100%; margin-top:12px;">Kirish</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="formRegister" onsubmit="submitRegister(event)" style="display:none;">
+        <div class="field">
+          <label>To'liq ism-familiya</label>
+          <input type="text" id="regFullName" class="txt" required placeholder="Masalan: Sardor Rahimov">
+        </div>
+        <div class="field">
+          <label>Foydalanuvchi nomi (Login)</label>
+          <input type="text" id="regUsername" class="txt" required placeholder="login_nomi">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="regEmail" class="txt" placeholder="email@domain.uz">
+        </div>
+        <div class="field">
+          <label>Rolni tanlang</label>
+          <select id="regRole" class="txt" required>
+            <option value="student">Talaba</option>
+            <option value="specialist">Tarmoq mutaxassisi</option>
+            <option value="teacher">O'qituvchi</option>
+          </select>
+          <small style="color:var(--mu); font-size:0.75rem;">(Administrator huquqi faqat mavjud admin tomonidan beriladi)</small>
+        </div>
+        <div class="field">
+          <label>Parol</label>
+          <input type="password" id="regPassword" class="txt" required minlength="6" placeholder="Kamida 6 ta belgi">
+        </div>
+        <button type="submit" class="btn" style="width:100%; margin-top:12px;">Ro'yxatdan o'tish</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- STUDENT: SUBMIT LAB REPORT MODAL -->
+<div class="modal-overlay" id="submitLabModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Laboratoriya hisobotini topshirish</h3>
+      <button class="modal-close" onclick="closeSubmitLabModal()">✕</button>
+    </div>
+    <form id="formSubmitLab" onsubmit="submitStudentLabReport(event)">
+      <div class="modal-body">
+        <div class="field">
+          <label>Laboratoriya topshirig'ini tanlang</label>
+          <select id="submitLabSelect" class="txt" required></select>
+        </div>
+        <div class="field">
+          <label>Oxirgi simulyatsiya natijalarini biriktirish</label>
+          <div id="submitAttachSimPreview" style="background:var(--bg-input); padding:10px; border-radius:8px; font-size:0.85rem;">
+            Oxirgi simulyatsiya avtomatik biriktiriladi.
+          </div>
+        </div>
+        <div class="field">
+          <label>Talaba xulosasi va hisobot matni</label>
+          <textarea id="submitStudentNotes" class="txt" rows="5" required placeholder="Laboratoriyada o'tkazilgan tahlil, kechikish va protokol bo'yicha xulosangizni yozing..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" onclick="closeSubmitLabModal()">Bekor qilish</button>
+        <button type="submit" class="btn">Hisobotni topshirish</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TEACHER: GRADE SUBMISSION MODAL -->
+<div class="modal-overlay" id="gradeModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Talaba ishini baholash</h3>
+      <button class="modal-close" onclick="closeGradeModal()">✕</button>
+    </div>
+    <form id="formGrade" onsubmit="submitTeacherGrade(event)">
+      <div class="modal-body">
+        <input type="hidden" id="gradeSubmissionId">
+        <div id="gradeSubmissionDetails" style="background:var(--bg-input); padding:12px; border-radius:8px; margin-bottom:14px; font-size:0.88rem; line-height:1.5;"></div>
+        <div class="field">
+          <label>Qo'yiladigan ball (0 - 100)</label>
+          <input type="number" id="gradeScoreInput" class="txt" min="0" max="100" required placeholder="Masalan: 95">
+        </div>
+        <div class="field">
+          <label>O'qituvchi taqrizi va izohi</label>
+          <textarea id="gradeFeedbackInput" class="txt" rows="4" placeholder="Talaba ishiga oid fikr va tavsiyalaringizni yozing..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" onclick="closeGradeModal()">Bekor qilish</button>
+        <button type="submit" class="btn">Bahoni tasdiqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TEACHER: CREATE ASSIGNMENT MODAL -->
+<div class="modal-overlay" id="teacherAssignmentModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Yangi topshiriq e'lon qilish</h3>
+      <button class="modal-close" onclick="closeTeacherAssignmentModal()">✕</button>
+    </div>
+    <form id="formTeacherAssignment" onsubmit="submitCreateAssignment(event)">
+      <div class="modal-body">
+        <div class="field">
+          <label>Laboratoriya shabloni</label>
+          <select id="asgnLabSelect" class="txt" required></select>
+        </div>
+        <div class="field">
+          <label>Topshiriq sarlavhasi</label>
+          <input type="text" id="asgnTitleInput" class="txt" required placeholder="Masalan: 1-Topshiriq: TLS unumdorligi">
+        </div>
+        <div class="field">
+          <label>Akademik guruh</label>
+          <input type="text" id="asgnGroupInput" class="txt" value="412-21 TATU" required>
+        </div>
+        <div class="field">
+          <label>Topshirish muddati (Due date)</label>
+          <input type="date" id="asgnDueDateInput" class="txt" required>
+        </div>
+        <div class="field">
+          <label>Maksimal ball</label>
+          <input type="number" id="asgnMaxScoreInput" class="txt" value="100" min="10" max="100" required>
+        </div>
+        <div class="field">
+          <label>Qo'shimcha yo'riqnoma</label>
+          <textarea id="asgnDescInput" class="txt" rows="3" placeholder="Talabalarga topshiriq bo'yicha ko'rsatma..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" onclick="closeTeacherAssignmentModal()">Bekor qilish</button>
+        <button type="submit" class="btn">Topshiriqni e'lon qilish</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN: ADD/EDIT USER MODAL -->
+<div class="modal-overlay" id="adminUserModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="adminUserModalTitle">Foydalanuvchi qo'shish</h3>
+      <button class="modal-close" onclick="closeAdminUserModal()">✕</button>
+    </div>
+    <form id="formAdminUser" onsubmit="submitAdminUserForm(event)">
+      <div class="modal-body">
+        <input type="hidden" id="admUserId">
+        <div class="field">
+          <label>Foydalanuvchi nomi (Login)</label>
+          <input type="text" id="admUsernameInput" class="txt" required placeholder="username">
+        </div>
+        <div class="field">
+          <label>To'liq ism-sharif</label>
+          <input type="text" id="admFullNameInput" class="txt" required placeholder="Ism Familiya">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="admEmailInput" class="txt" placeholder="user@domain.uz">
+        </div>
+        <div class="field" id="admPasswordGroup">
+          <label>Dastlabki parol</label>
+          <input type="password" id="admPasswordInput" class="txt" placeholder="Parol kiriting">
+        </div>
+        <div class="field">
+          <label>Tizimdagi roli</label>
+          <select id="admRoleSelect" class="txt" required>
+            <option value="student">Talaba (student)</option>
+            <option value="teacher">O'qituvchi (teacher)</option>
+            <option value="specialist">Tarmoq mutaxassisi (specialist)</option>
+            <option value="admin">Administrator (admin)</option>
+          </select>
+        </div>
+        <div class="field" id="admStatusGroup" style="display:none;">
+          <label>Holat</label>
+          <select id="admStatusSelect" class="txt">
+            <option value="active">Faol (active)</option>
+            <option value="blocked">Bloklangan (blocked)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" onclick="closeAdminUserModal()">Bekor qilish</button>
+        <button type="submit" class="btn">Saqlash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN: RESET PASSWORD MODAL -->
+<div class="modal-overlay" id="adminResetPwdModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Parolni qayta tiklash</h3>
+      <button class="modal-close" onclick="closeAdminResetPwdModal()">✕</button>
+    </div>
+    <form id="formAdminResetPwd" onsubmit="submitAdminResetPassword(event)">
+      <div class="modal-body">
+        <input type="hidden" id="resetPwdUserId">
+        <p style="font-size:0.9rem; margin-bottom:12px;">Foydalanuvchi: <b id="resetPwdUsernameDisplay"></b></p>
+        <div class="field">
+          <label>Yangi parol</label>
+          <input type="password" id="resetPwdNewInput" class="txt" required minlength="6" placeholder="Yangi parolni kiriting">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn ghost" onclick="closeAdminResetPwdModal()">Bekor qilish</button>
+        <button type="submit" class="btn danger">Parolni yangilash</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== LOADING ===== -->
+<div id="loader">
+  <div class="lbox">
+    <div class="spin"></div>
+    <h3>Tarmoq simulyatsiyasi bajarilmoqda...</h3>
+    <ul>
+      <li>Parametrlarni qabul qilish va tekshirish</li>
+      <li>Simulyatsiya dvigatelida hisoblash</li>
+      <li>Tarmoq topologiyasini modellashtirish</li>
+      <li>Xavfsizlik protokollari tahlili</li>
+      <li>AI neyron diagnostikasi</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== TOAST BILDIRISHNOMALAR ===== -->
+<div id="toastContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
